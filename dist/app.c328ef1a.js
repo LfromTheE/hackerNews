@@ -123,26 +123,26 @@ var ajax = new XMLHttpRequest();
 var content = document.createElement('div');
 var NEWS_URL = 'https://api.hnpwa.com/v0/news/1.json';
 var CONTENTS_URL = 'https://api.hnpwa.com/v0/item/@id.json';
-ajax.open('GET', NEWS_URL, false);
-ajax.send();
-var newsFeed = JSON.parse(ajax.response);
+getData = function getData(url) {
+  ajax.open('GET', url, false);
+  ajax.send();
+  return JSON.parse(ajax.response);
+};
+var newsFeed = getData(NEWS_URL);
 var ul = document.createElement('ul');
 window.addEventListener('hashchange', function () {
   var id = location.hash.substring(1);
   var title = document.createElement('h1');
   content.appendChild(title);
-  ajax.open('GET', CONTENTS_URL.replace('@id', id), false);
-  ajax.send();
-  var newsContent = JSON.parse(ajax.response);
+  var newsContent = getData(CONTENTS_URL.replace('@id', id));
   title.innerHTML = newsContent.title;
 });
 for (var i = 0; i < 10; i++) {
   var a = document.createElement('a');
   var li = document.createElement('li');
-  a.href = "#".concat(newsFeed[i].id);
-  a.innerHTML = "".concat(newsFeed[i].title, "(").concat(newsFeed[i].comments_count, ")");
-  li.appendChild(a);
-  ul.appendChild(li);
+  var div = document.createElement('div');
+  div.innerHTML = "\n    <li>\n        <a href=\"#".concat(newsFeed[i].id, "\">\n        ").concat(newsFeed[i].title, "(").concat(newsFeed[i].comments_count, ")</a>\n    </li>\n    ");
+  ul.appendChild(div);
 }
 container.appendChild(ul);
 container.appendChild(content);
@@ -171,7 +171,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "52612" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "55468" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];
