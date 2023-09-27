@@ -11,10 +11,10 @@ ajax.send();
 const newsFeed = JSON.parse(ajax.response);
 const ul= document.createElement('ul');
 
-window.addEventListener('hashchange',()=>{
+window.addEventListener('hashchange',function() {
     const id =location.hash.substring(1);
-
     const title = document.createElement('h1');
+
     content.appendChild(title);
 
     ajax.open('GET',CONTENTS_URL.replace('@id',id),false)
