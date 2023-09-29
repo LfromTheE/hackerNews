@@ -1,0 +1,75 @@
+diff a/app.js b/app.js	(rejected hunks)
+@@ -15,33 +15,51 @@
+ }
+ 
+ 
+-const newsFeed = getData(NEWS_URL);
+-const ul= document.createElement('ul');
+-
+-window.addEventListener('hashchange',function() {
+-    const id =location.hash.substring(1);
+-    const title = document.createElement('h1');
++function newsFeed(){
+ 
+-    content.appendChild(title);
+-    const newsContent =getData(CONTENTS_URL.replace('@id',id));
++    const newsFeed = getData(NEWS_URL);
++    const newsList =[];
++    newsList.push('<ul>');
+ 
+-    title.innerHTML = newsContent.title
+-})
++    for(let i=0; i<10; i++){
++        newsList.push(
++        `
++        <li>
++            <a href="#${newsFeed[i].id}">
++            ${newsFeed[i].title}(${newsFeed[i].comments_count})</a>
++        </li>
++        `
++        )
++    }
++    newsList.push('</ul>');
++    container.innerHTML = newsList.join("");
+ 
++}
+ 
+-for(let i=0; i<10; i++){
+-    const a =document.createElement('a');
+-    const li= document.createElement('li');
+-    const div = document.createElement('div')
++function newsDetail() {
++    const id =location.hash.substring(1);
++    const newsContent =getData(CONTENTS_URL.replace('@id',id));
+ 
+-    div.innerHTML=
++    container.innerHTML =
+     `
+-    <li>
+-        <a href="#${newsFeed[i].id}">
+-        ${newsFeed[i].title}(${newsFeed[i].comments_count})</a>
+-    </li>
++     <h1>${newsContent.title}</h1>
++
++     <div>
++        <a href="#">목록으로</a>
++     </div>
+     `
+-    ul.appendChild(div);
++
+ }
+-container.appendChild(ul);
+-container.appendChild(content);
++
++function router(){
++    const routePath = location.hash;
++    if(routePath==''){
++        newsFeed();
++    }else{
++        newsDetail();
++    }
++}
++
++window.addEventListener('hashchange',router)
++router();
++
